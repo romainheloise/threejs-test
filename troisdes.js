@@ -29,7 +29,7 @@ const createCube = (x, y) => {
   const texture = new THREE.TextureLoader().load(
     "./Metal_Mesh_003_basecolor.jpg"
   );
-  const material = new THREE.MeshPhongMaterial({ map: texture });
+  const material = new THREE.MeshPhongMaterial({ color: 'blue' });
   const geometry = new THREE.BoxGeometry(8, 8, 8);
   const box = new THREE.Mesh(geometry, material);
   box.position.x = x;
@@ -40,18 +40,49 @@ const createCube = (x, y) => {
 };
 
 //CREATE DECA //
-const deca = (x, y) => {
-  const material = new THREE.MeshPhongMaterial({ color: "red" });
+const deca = (x, y,z) => {
+  const material = new THREE.MeshToonMaterial({ color: "orange" });
   const radius = 5;
   const detail = 0;
   const geometry = new THREE.DodecahedronBufferGeometry(radius, detail);
   const deca = new THREE.Mesh(geometry, material);
   deca.position.x = x;
   deca.position.y = y;
+  deca.position.z = z;
   scene.add(deca);
   modeles.push(deca);
   return deca;
 };
+
+// CREATE TEXT // 
+
+const textRota = (x, y, z) => {
+  const loader = new THREE.FontLoader();
+  loader.load('./Pacifico_Regular.json', (font) => {
+    const text = 'Romain Heloise';
+    const geometry = new THREE.TextBufferGeometry(text, {
+      font: font,
+      size: 5,
+      height: 5,
+      curveSegments: 20,
+      bevelEnabled: true,
+      bevelThickness: 0.5,
+      bevelSize: 0.3,
+      bevelSegments: 5,
+    });
+    const material = new THREE.MeshToonMaterial({ color: "red" });
+    const textRen = new THREE.Mesh(geometry, material);
+    textRen.position.x = x;
+    textRen.position.y = y;
+    textRen.position.z = z;
+    textRen.rotation.x += 0.2;
+    scene.add(textRen)
+  });
+
+
+}
+
+
 
 // RENDERING //
 const renderScene = () => {
@@ -63,7 +94,7 @@ const renderScene = () => {
     modele.rotation.y += 0.01;
   });
 
-  const vec = new THREE.Vector2( 0, 1 );
+  const vec = new THREE.Vector2(0, 1);
   const width = renderer.getSize(vec).x;
   const height = renderer.getSize(vec).y;
   const pixelRatio = window.devicePixelRatio;
@@ -85,7 +116,8 @@ const renderScene = () => {
 };
 
 const modeles = [];
-const cube = createCube(0, 0);
-const decaH = deca(10, 20);
+textRota(-25, 10, 3)
+const cube = createCube(-10, 8);
+const decaH = deca(20, 15,25);
 
 renderScene();
